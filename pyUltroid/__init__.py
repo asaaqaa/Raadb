@@ -1,9 +1,9 @@
-# Ultroid - UserBot
-# Copyright (C) 2021-2022 TeamUltroid
+# Repthon - UserBot
+# Copyright (C) 2021-2022 TeamRepthon
 #
-# This file is a part of < https://github.com/TeamUltroid/Ultroid/ >
+# This file is a part of < https://github.com/rogerpq/Repthon/ >
 # PLease read the GNU Affero General Public License in
-# <https://github.com/TeamUltroid/pyUltroid/blob/main/LICENSE>.
+# <https://github.com/rogerpq/Repthon/blob/main/LICENSE>.
 
 import os
 import sys
@@ -14,7 +14,7 @@ run_as_module = False
 
 class ULTConfig:
     lang = "ar"
-    thumb = "resources/extras/ultroid.jpg"
+    thumb = "resources/extras/IMG_20221003_134319_520.jpg"
 
 if sys.argv[0] == "-m":
     run_as_module = True
@@ -42,9 +42,9 @@ if sys.argv[0] == "-m":
     udB = UltroidDB()
     update_envs()
 
-    LOGS.info(f"Connecting to {udB.name}...")
+    LOGS.info(f"جار بدء {udB.name}...")
     if udB.ping():
-        LOGS.info(f"Connected to {udB.name} Successfully!")
+        LOGS.info(f"جار بدء {udB.name} اكتمل!")
 
     BOT_MODE = udB.get_key("BOTMODE")
     DUAL_MODE = udB.get_key("DUAL_MODE")
