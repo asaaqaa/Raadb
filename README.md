@@ -19,7 +19,7 @@
 [![Contributors](https://img.shields.io/github/contributors/TeamUltroid/Ultroid?style=flat-square&color=green)](https://github.com/rogerpq/Ultroid/graphs/contributors)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
 [![License](https://img.shields.io/badge/License-AGPL-blue)](https://github.com/rogerpq/Ultroid/blob/main/LICENSE)   
-[![Sparkline](https://stars.medv.io/rogerpq/Ultroid.svg)](https://stars.medv.io/rogerpq/Ultroid)
+[![Sparkline](https://stars.medv.io/TeamUltroid/Ultroid.svg)](https://stars.medv.io/rogerpq/Repthon)
 ----
 
 # التنصيب
