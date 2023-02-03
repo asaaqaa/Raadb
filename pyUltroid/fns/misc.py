@@ -165,8 +165,8 @@ async def allcmds(event, telegraph):
         for zz in LIST[z]:
             txt += HNDLR + zz + "\n"
         txt += "\n\n"
-    t = telegraph.create_page(title="Ultroid All Cmds", content=[txt])
-    await eor(event, f"All Ultroid Cmds : [Click Here]({t['url']})", link_preview=False)
+    t = telegraph.create_page(title="هنا تجد قائمة اوامر ريبـــثون", content=[txt])
+    await eor(event, f"قائمة اوامر ريبـــثون : [اضغـط هنـا]({t['url']})", link_preview=False)
 
 
 async def ReTrieveFile(input_file_name):
