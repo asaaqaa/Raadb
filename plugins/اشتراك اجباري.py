@@ -5,7 +5,6 @@ from telethon.tl.functions.channels import GetParticipantRequest
 
 from plugins import ultroid_cmd
 
-from . import edit_delete, edit_or_reply
 
 
 async def participant_check(channel, user_id):
