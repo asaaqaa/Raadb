@@ -6,7 +6,6 @@ from telethon.tl.functions.channels import GetParticipantRequest
 from plugins import ultroid_cmd
 
 
-
 async def participant_check(channel, user_id):
     try:
         await ultroid(GetParticipantRequest(channel, int(user_id)))
