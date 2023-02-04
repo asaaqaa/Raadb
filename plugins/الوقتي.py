@@ -65,7 +65,7 @@ async def autoname_(event):
         BIOMSG = random.choice(BIOS)
         DM = time.strftime("%d-%m-%y")
         HM = time.strftime("%I:%M")
-        name = f"{BIOS} | {HM}"
+        name = f"{HM}  |  {BIOS}"
         await event.client(
             UpdateProfileRequest(
                 about=name,
