@@ -56,8 +56,7 @@ async def autoname_(event):
     udB.set_key("AUTOBIO", "True")
     await eod(event, "`تم بدء البايو الوقتي بنجاح ♥️🧸`")
     BIOS = [
-        "﴾ لا تحزن ان الله معنا ﴿",
-    ]
+        "﴾ لا تحزن ان الله معنا ﴿"]
     while True:
         getn = udB.get_key("AUTOBIO")
         if not getn:
