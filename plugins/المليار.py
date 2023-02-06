@@ -44,12 +44,12 @@ async def _(event):
                 except:
                     bott = url.split('/')[-1]
                     await ultroid_bot(ImportChatInviteRequest(bott))
-                msg2 = await ultroid.get_messages('@t06bot', limit=1)
+                msg2 = await ultroid_bot.get_messages('@t06bot', limit=1)
                 await msg2[0].click(text='تحقق')
                 chs += 1
                 await ultroid_bot.send_message("me", f"تم الاشتراك في {chs} قناة")
             except:
-                await ultroid_cmd.send_message(event.chat_id, f"**خطأ , ممكن تبندت**")
+                await ultroid_bot.send_message(event.chat_id, f"**خطأ , ممكن تبندت**")
                 break
         await ultroid_bot.send_message(event.chat_id, "**تم الانتهاء من التجميع !**")
 
