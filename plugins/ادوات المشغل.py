@@ -90,7 +90,7 @@ async def _(e):
 
 
 @ultroid_cmd(
-    pattern="وضع عنوان المحادثة الصوتية (?: |$)(.*)",
+    pattern="وضع عنوان المحادثة الصوتية(?: |$)(.*)",
     admins_only=True,
     groups_only=True,
 )
