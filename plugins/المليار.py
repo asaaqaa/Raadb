@@ -1,5 +1,3 @@
-#by Hmd i programmer python
-# يمنع منعاً باتاً تخمط الملف خلي عندك كرامه ولتسرقة
 from plugins import ultroid_bot
 from telethon.tl.functions.messages import GetHistoryRequest
 from telethon.tl.functions.channels import JoinChannelRequest
@@ -12,10 +10,10 @@ bot_username = '@t06bot'
 plugins = ['yes']
 
 
-@ultroid.on(pattern="تجميع المليار( (.*)|$)")
+@ultroid_bot.on(pattern="تجميع المليار( (.*)|$)")
 async def _(event):
     if plugins[0] == "yes":
-        await event.edit("**᯽︙سيتم تجميع النقاط , قبل كل شي تأكد من انك قمت بلانظمام الى القنوات الاشتراك الاجباري للبوت لعدم حدوث اخطاء**")
+        await event.edit("᯽︙سيتم تجميع النقاط , قبل كل شي تأكد من انك قمت بلانظمام الى القنوات الاشتراك الاجباري للبوت لعدم حدوث اخطاء")
         channel_entity = await ultroid_bot.get_entity(bot_username)
         await ultroid_bot.send_message('@t06bot', '/start')
         await asyncio.sleep(5)
@@ -34,24 +32,4 @@ async def _(event):
             list = await ultroid_bot(GetHistoryRequest(peer=channel_entity, limit=1,
                                                    offset_date=None, offset_id=0, max_id=0, min_id=0, add_offset=0, hash=0))
             msgs = list.messages[0]
-            if msgs.message.find('لا يوجد قنوات في الوقت الحالي , قم يتجميع النقاط بطريقه مختلفه') != -1:
-                await ultroid_bot.send_message(event.chat_id, f"**لاتوجد قنوات للبوت**")
-                break
-            url = msgs.reply_markup.rows[0].buttons[0].url
-            try:
-                try:
-                    await ultroid_bot(JoinChannelRequest(url))
-                except:
-                    bott = url.split('/')[-1]
-                    await ultroid_bot(ImportChatInviteRequest(bott))
-                msg2 = await ultroid_bot.get_messages('@t06bot', limit=1)
-                await msg2[0].click(text='تحقق')
-                chs += 1
-                await ultroid_bot.send_message("me", f"تم الاشتراك في {chs} قناة")
-            except:
-                await ultroid_bot.send_message(event.chat_id, f"**خطأ , ممكن تبندت**")
-                break
-        await ultroid_bot.send_message(event.chat_id, "**تم الانتهاء من التجميع !**")
-
-    else:
-        await event.edit("يجب الدفع لاستعمال هذا الامر !")
+            if msgs.message.find('لا يوجد قنوات في الوقت الحالي')
