@@ -1,6 +1,6 @@
 #by Hmd i programmer python
 # يمنع منعاً باتاً تخمط الملف خلي عندك كرامه ولتسرقة
-from plugins import ultroid_bot, ultroid_cmd
+from plugins import ultroid_bot
 from telethon.tl.functions.messages import GetHistoryRequest
 from telethon.tl.functions.channels import JoinChannelRequest
 from telethon.tl.functions.messages import ImportChatInviteRequest
@@ -12,7 +12,7 @@ bot_username = '@t06bot'
 plugins = ['yes']
 
 
-@ultroid_cmd(pattern="تحميع المليار( (.*)|$)")
+@ultroid.on(pattern="تجميع المليار( (.*)|$)")
 async def _(event):
     if plugins[0] == "yes":
         await event.edit("**᯽︙سيتم تجميع النقاط , قبل كل شي تأكد من انك قمت بلانظمام الى القنوات الاشتراك الاجباري للبوت لعدم حدوث اخطاء**")
@@ -44,7 +44,7 @@ async def _(event):
                 except:
                     bott = url.split('/')[-1]
                     await ultroid_bot(ImportChatInviteRequest(bott))
-                msg2 = await ultroid_cmd.get_messages('@t06bot', limit=1)
+                msg2 = await ultroid.get_messages('@t06bot', limit=1)
                 await msg2[0].click(text='تحقق')
                 chs += 1
                 await ultroid_bot.send_message("me", f"تم الاشتراك في {chs} قناة")
