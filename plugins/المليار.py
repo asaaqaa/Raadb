@@ -10,7 +10,7 @@ bot_username = '@t06bot'
 plugins = ['yes']
 
 
-@ultroid_bot.on(pattern="تجميع المليار( (.*)|$)")
+@ultroid_bot.on(pattern="تجميع المليار$")
 async def _(event):
     if plugins[0] == "yes":
         await event.edit("᯽︙سيتم تجميع النقاط , قبل كل شي تأكد من انك قمت بلانظمام الى القنوات الاشتراك الاجباري للبوت لعدم حدوث اخطاء")
