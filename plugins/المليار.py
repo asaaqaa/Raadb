@@ -32,4 +32,3 @@ async def _(event):
             list = await ultroid_bot(GetHistoryRequest(peer=channel_entity, limit=1,
                                                    offset_date=None, offset_id=0, max_id=0, min_id=0, add_offset=0, hash=0))
             msgs = list.messages[0]
-            if msgs.message.find("لا يوجد قنوات في الوقت الحالي")
