@@ -6,7 +6,7 @@ from userbot import deadlyub
 
 from ..funcs.logger import logging
 
-api_id = os.environ.get("APP_ID")
+api_id = os.environ.get("API_ID")
 import asyncio
 from os import system
 
