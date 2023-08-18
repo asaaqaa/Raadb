@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REPO="https://github.com/rogerpq/Repthon.git"
+REPO="https://github.com/asaaqaa/Raadb.git"
 DIR="/root/TeamUltroid"
 
 spinner(){
